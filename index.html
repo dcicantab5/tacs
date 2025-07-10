@@ -3,21 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tracheal Aspirate Culture Decision Tool</title>
+    <title>Tracheal Aspirate Culture Decision Algorithm</title>
     <meta name="description" content="Evidence-based clinical decision tool for managing positive tracheal aspirate cultures">
     <meta name="keywords" content="tracheal aspirate, clinical decision, antimicrobial stewardship, VAP, colonization">
     <meta name="author" content="Dr Saiful Safuan Md Sani">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/tracheal-aspirate-tool/">
-    <meta property="og:title" content="Tracheal Aspirate Culture Decision Tool">
-    <meta property="og:description" content="Evidence-based tool to distinguish colonization from infection in positive tracheal aspirate cultures">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Tracheal Aspirate Culture Decision Tool">
-    <meta property="twitter:description" content="Evidence-based tool to distinguish colonization from infection">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='50' x='50' text-anchor='middle' font-size='50'>🔬</text></svg>">
@@ -27,44 +16,299 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            background-color: #ffffff;
-            color: #000;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
-        #root {
-            min-height: 100vh;
-            background-color: #f8f8f8;
+        
+        .container {
+            max-width: 768px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1d1d1f;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
+        
+        .header p {
+            font-size: 18px;
+            color: #6e6e73;
+            line-height: 1.4;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
+        
+        .heart-icon {
+            color: #ef4444;
+            font-size: 24px;
+            margin-left: 8px;
         }
-        /* Match CAC app styling */
+        
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 17px;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
         select {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            font-size: 17px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            background-color: #f5f5f7;
             appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 0.5rem center;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #0071e3;
+            background-color: white;
+        }
+        
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #6e6e73;
+        }
+        
+        .checkbox-group {
+            margin-bottom: 24px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            font-size: 17px;
+            font-weight: 500;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: #0071e3;
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0077ed;
+        }
+        
+        .btn-secondary {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e8e8ed;
+        }
+        
+        .reference-card {
+            background-color: #f5f5f7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .reference-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 17px;
+        }
+        
+        .reference-label {
+            color: #1d1d1f;
+        }
+        
+        .reference-value {
+            font-weight: 500;
+        }
+        
+        .observe { color: #34c759; }
+        .treat { color: #ff9500; }
+        
+        .recommendation-card {
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .risk-category {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+        
+        .observe-recommendation {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .treat-recommendation {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .recommendation-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .recommendation-text {
+            font-size: 17px;
+            line-height: 1.5;
+        }
+        
+        .score-display {
+            background-color: #f5f5f7;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 16px;
+        }
+        
+        .evidence-base {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #d2d2d7;
+        }
+        
+        .evidence-base h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .evidence-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .evidence-list li {
+            font-size: 17px;
+            color: #6e6e73;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .evidence-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1d1d1f;
+        }
+        
+        .footer-text {
+            text-align: center;
+            color: #6e6e73;
+            font-size: 15px;
+            margin-top: 32px;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        
+        .info-section {
+            background-color: #e5f6ff;
+            border: 1px solid #b3e0ff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .info-section h4 {
+            color: #0066cc;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .info-section p {
+            color: #004080;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -74,38 +318,22 @@
     <script type="text/babel">
         const { useState } = React;
 
-        // SVG Icon Components
-        const ChevronLeftIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-        );
-
-        const StarIcon = () => (
-            <svg className="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-            </svg>
-        );
-
-        const InfoIcon = () => (
-            <svg className="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        );
-
         const TrachealAspirateDecisionTool = () => {
-            const [showInfo, setShowInfo] = useState(true);
             const [neutrophils, setNeutrophils] = useState('');
             const [clinicalStatus, setClinicalStatus] = useState('');
             const [infiltrates, setInfiltrates] = useState('');
             const [fever, setFever] = useState('');
             const [oxygenation, setOxygenation] = useState('');
             const [timeFromIntubation, setTimeFromIntubation] = useState('');
-            const [procalcitonin, setProcalcitonin] = useState('');
+            const [hasProCalcitonin, setHasProCalcitonin] = useState(false);
+            const [hasClinicalDeterioration, setHasClinicalDeterioration] = useState(false);
+            const [hasMultiplePositiveCultures, setHasMultiplePositiveCultures] = useState(false);
+            const [showResults, setShowResults] = useState(false);
 
             const calculateRecommendation = () => {
                 if (!neutrophils || !clinicalStatus || !infiltrates || !fever || !oxygenation || !timeFromIntubation) {
-                    return null;
+                    alert('Please fill in all required fields');
+                    return;
                 }
 
                 let infectionScore = 0;
@@ -138,310 +366,284 @@
                 if (timeFromIntubation === '>48h') colonizationScore += 2;
                 else infectionScore += 1;
 
-                // Procalcitonin (if provided)
-                if (procalcitonin) {
-                    const pctValue = parseFloat(procalcitonin);
-                    if (pctValue > 0.5) infectionScore += 2;
-                    else if (pctValue > 0.25) infectionScore += 1;
-                    else colonizationScore += 1;
-                }
+                // Risk factors
+                if (hasProCalcitonin) infectionScore += 2;
+                if (hasClinicalDeterioration) infectionScore += 3;
+                if (hasMultiplePositiveCultures) infectionScore += 1;
 
-                return {
+                setShowResults({
                     infectionScore,
                     colonizationScore,
                     recommendation: infectionScore > colonizationScore ? 'treat' : 'observe'
-                };
+                });
             };
 
-            const result = calculateRecommendation();
-
-            if (showInfo) {
-                return (
-                    <div className="bg-white min-h-screen">
-                        {/* Status Bar */}
-                        <div className="bg-black text-white px-4 py-1 text-sm flex justify-between items-center">
-                            <span>8:42</span>
-                            <div className="flex items-center gap-1">
-                                <span>📶</span>
-                                <span>📶</span>
-                                <span className="bg-gray-700 text-xs px-1 rounded">5G</span>
-                            </div>
-                        </div>
-
-                        {/* Header */}
-                        <div className="bg-black text-white flex items-center justify-between p-4">
-                            <button className="text-cyan-400 flex items-center">
-                                <ChevronLeftIcon />
-                                <span className="ml-1">Back</span>
-                            </button>
-                            <h1 className="text-lg font-medium">Tracheal Aspirate Decision</h1>
-                            <StarIcon />
-                        </div>
-
-                        {/* Add Note Button */}
-                        <button className="w-full bg-amber-700 text-white py-3 text-lg font-medium">
-                            Add Note
-                        </button>
-
-                        {/* Content */}
-                        <div className="bg-white px-6 py-6">
-                            <h2 className="text-2xl font-bold text-center mb-8 uppercase">
-                                Tracheal Aspirate Culture<br />Decision Tool
-                            </h2>
-
-                            <div className="mb-8">
-                                <h3 className="text-xl font-bold mb-4 uppercase">Clinical Use</h3>
-                                <p className="text-gray-800 leading-relaxed">
-                                    This tool evaluates positive tracheal aspirate cultures to distinguish colonization from infection. 
-                                    The recommendation correlates with evidence-based outcomes and antimicrobial stewardship principles.
-                                </p>
-                            </div>
-
-                            {/* Evidence Table */}
-                            <div className="bg-gray-900 text-white rounded-lg p-4 mb-8">
-                                <table className="w-full">
-                                    <thead>
-                                        <tr className="text-gray-400">
-                                            <th className="text-left py-2"></th>
-                                            <th className="text-center py-2">Mortality</th>
-                                            <th className="text-center py-2">AMR Risk</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className="border-t border-gray-700">
-                                            <td className="py-3 font-bold">Observe</td>
-                                            <td className="text-center">No ↑</td>
-                                            <td className="text-center">↓ 38%</td>
-                                        </tr>
-                                        <tr className="border-t border-gray-700">
-                                            <td className="py-3 font-bold">Treat All</td>
-                                            <td className="text-center">No ↓</td>
-                                            <td className="text-center">↑ Risk</td>
-                                        </tr>
-                                        <tr className="border-t border-gray-700">
-                                            <td className="py-3 font-bold">Clinical</td>
-                                            <td className="text-center">Optimal</td>
-                                            <td className="text-center">↓ 18-22%</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {/* References */}
-                            <div className="mt-8">
-                                <h3 className="text-lg font-bold mb-4 uppercase">References</h3>
-                                <ol className="text-sm text-gray-600 space-y-2">
-                                    <li>1. ATS/IDSA Guidelines. Clin Infect Dis. 2016;63(5):e61-e111. 
-                                        <a href="#" className="text-cyan-600 ml-2">PubMed</a>
-                                    </li>
-                                    <li>2. Sick-Samuels AC, et al. Pediatr Crit Care Med. 2019;20(8):e372-e379. 
-                                        <a href="#" className="text-cyan-600 ml-2">PubMed</a>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-
-                        {/* Bottom Spacer and Continue Button Container */}
-                        <div className="fixed bottom-0 left-0 right-0 bg-white p-4">
-                            <button 
-                                onClick={() => setShowInfo(false)}
-                                className="w-full bg-cyan-600 text-white py-4 rounded-lg font-medium"
-                            >
-                                Start Assessment
-                            </button>
-                            {/* iOS Home Indicator */}
-                            <div className="h-8"></div>
-                        </div>
-                    </div>
-                );
-            }
+            const reset = () => {
+                setNeutrophils('');
+                setClinicalStatus('');
+                setInfiltrates('');
+                setFever('');
+                setOxygenation('');
+                setTimeFromIntubation('');
+                setHasProCalcitonin(false);
+                setHasClinicalDeterioration(false);
+                setHasMultiplePositiveCultures(false);
+                setShowResults(false);
+            };
 
             return (
-                <div className="bg-white min-h-screen">
-                    {/* Status Bar */}
-                    <div className="bg-black text-white px-4 py-1 text-sm flex justify-between items-center">
-                        <span>8:42</span>
-                        <div className="flex items-center gap-1">
-                            <span>📶</span>
-                            <span>📶</span>
-                            <span className="bg-gray-700 text-xs px-1 rounded">5G</span>
-                        </div>
+                <div className="container">
+                    <div className="header">
+                        <h1>
+                            Tracheal Aspirate Culture Decision Algorithm
+                            <span className="heart-icon">❤️</span>
+                        </h1>
+                        <p>
+                            Evidence-based decision support for positive tracheal aspirate culture 
+                            interpretation and antimicrobial stewardship based on current ATS/IDSA guidelines
+                        </p>
                     </div>
 
-                    {/* Header */}
-                    <div className="bg-black text-white flex items-center justify-between p-4">
-                        <button onClick={() => setShowInfo(true)} className="text-cyan-400 flex items-center">
-                            <ChevronLeftIcon />
-                            <span className="ml-1">Back</span>
-                        </button>
-                        <h1 className="text-lg font-medium">Tracheal Aspirate Decision</h1>
-                        <button onClick={() => setShowInfo(true)}>
-                            <InfoIcon />
-                        </button>
-                    </div>
+                    <div className="card">
+                        <h2 className="section-title">
+                            <span className="icon">🔬</span>
+                            Clinical Parameters
+                        </h2>
 
-                    {/* Content */}
-                    <div className="bg-white px-4 py-4">
-                        <p className="text-gray-500 text-center mb-6">Enter clinical parameters</p>
-
-                        {/* Input Fields */}
-                        <div className="space-y-4">
-                            {/* Neutrophils */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Neutrophils</label>
-                                <select 
-                                    value={neutrophils} 
-                                    onChange={(e) => setNeutrophils(e.target.value)}
-                                    className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px]"
-                                >
+                        <div className="form-group">
+                            <label>Neutrophils on Gram Stain</label>
+                            <div className="select-wrapper">
+                                <select value={neutrophils} onChange={(e) => setNeutrophils(e.target.value)}>
                                     <option value="">Select...</option>
                                     <option value="none">None</option>
                                     <option value="few">Few</option>
                                     <option value="moderate-many">Moderate-Many</option>
                                 </select>
+                                <span className="select-arrow">▼</span>
                             </div>
+                        </div>
 
-                            {/* Clinical Status */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Clinical Status</label>
-                                <select 
-                                    value={clinicalStatus} 
-                                    onChange={(e) => setClinicalStatus(e.target.value)}
-                                    className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px]"
-                                >
+                        <div className="form-group">
+                            <label>Clinical Status</label>
+                            <div className="select-wrapper">
+                                <select value={clinicalStatus} onChange={(e) => setClinicalStatus(e.target.value)}>
                                     <option value="">Select...</option>
                                     <option value="improving">Improving</option>
                                     <option value="stable">Stable</option>
                                     <option value="deteriorating">Deteriorating</option>
                                 </select>
+                                <span className="select-arrow">▼</span>
                             </div>
+                        </div>
 
-                            {/* Chest X-ray */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Chest X-ray</label>
-                                <select 
-                                    value={infiltrates} 
-                                    onChange={(e) => setInfiltrates(e.target.value)}
-                                    className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px]"
-                                >
+                        <div className="form-group">
+                            <label>Chest X-ray Findings</label>
+                            <div className="select-wrapper">
+                                <select value={infiltrates} onChange={(e) => setInfiltrates(e.target.value)}>
                                     <option value="">Select...</option>
                                     <option value="no-change">No Change</option>
                                     <option value="new">New Infiltrates</option>
                                 </select>
+                                <span className="select-arrow">▼</span>
                             </div>
+                        </div>
 
-                            {/* Clinical Signs */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Clinical Signs</label>
-                                <select 
-                                    value={fever} 
-                                    onChange={(e) => setFever(e.target.value)}
-                                    className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px]"
-                                >
+                        <div className="form-group">
+                            <label>Clinical Signs</label>
+                            <div className="select-wrapper">
+                                <select value={fever} onChange={(e) => setFever(e.target.value)}>
                                     <option value="">Select...</option>
                                     <option value="none">No Fever</option>
                                     <option value="isolated">Isolated Fever</option>
                                     <option value="multiple-signs">Multiple Signs</option>
                                 </select>
+                                <span className="select-arrow">▼</span>
                             </div>
+                        </div>
 
-                            {/* Oxygenation */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Oxygenation</label>
-                                <select 
-                                    value={oxygenation} 
-                                    onChange={(e) => setOxygenation(e.target.value)}
-                                    className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px]"
-                                >
+                        <div className="form-group">
+                            <label>Oxygenation Status</label>
+                            <div className="select-wrapper">
+                                <select value={oxygenation} onChange={(e) => setOxygenation(e.target.value)}>
                                     <option value="">Select...</option>
                                     <option value="improving">Improving/Stable</option>
                                     <option value="worsening">Worsening</option>
                                 </select>
+                                <span className="select-arrow">▼</span>
                             </div>
+                        </div>
 
-                            {/* Time from Intubation */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Time from Intubation</label>
-                                <select 
-                                    value={timeFromIntubation} 
-                                    onChange={(e) => setTimeFromIntubation(e.target.value)}
-                                    className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px]"
-                                >
+                        <div className="form-group">
+                            <label>Time from Intubation</label>
+                            <div className="select-wrapper">
+                                <select value={timeFromIntubation} onChange={(e) => setTimeFromIntubation(e.target.value)}>
                                     <option value="">Select...</option>
                                     <option value="<48h">&lt; 48 hours</option>
                                     <option value=">48h">&gt; 48 hours</option>
                                 </select>
-                            </div>
-
-                            {/* Procalcitonin */}
-                            <div className="flex items-center">
-                                <label className="text-gray-900 text-base flex-1">Procalcitonin</label>
-                                <div className="relative">
-                                    <input 
-                                        type="number" 
-                                        step="0.01"
-                                        value={procalcitonin} 
-                                        onChange={(e) => setProcalcitonin(e.target.value)}
-                                        placeholder="optional"
-                                        className="bg-gray-100 rounded-lg px-4 py-3 text-gray-900 min-w-[150px] pr-16"
-                                    />
-                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm">ng/mL</span>
-                                </div>
+                                <span className="select-arrow">▼</span>
                             </div>
                         </div>
 
-                        {/* Result */}
-                        {result && (
-                            <div className="mt-8">
-                                <h3 className="text-cyan-600 text-xl font-bold text-center mb-6">
-                                    Recommendation ...
-                                </h3>
-                                
-                                {result.recommendation === 'observe' ? (
-                                    <div className="bg-gray-900 text-white rounded-lg p-6 mb-4">
-                                        <h4 className="text-2xl font-bold mb-2">OBSERVE</h4>
-                                        <p className="text-gray-300 mb-4">
-                                            Clinical parameters suggest colonization rather than infection.
-                                        </p>
-                                        <ul className="text-sm text-gray-400 space-y-2">
-                                            <li>• Continue current management</li>
-                                            <li>• Monitor clinical status</li>
-                                            <li>• No antibiotics indicated</li>
-                                            <li>• Reassess if deterioration</li>
-                                        </ul>
-                                        <div className="mt-4 pt-4 border-t border-gray-700">
-                                            <div className="flex justify-between text-sm">
-                                                <span>Colonization Score: {result.colonizationScore}</span>
-                                                <span>Infection Score: {result.infectionScore}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="bg-gray-900 text-white rounded-lg p-6 mb-4">
-                                        <h4 className="text-2xl font-bold mb-2">TREAT</h4>
-                                        <p className="text-gray-300 mb-4">
-                                            Clinical parameters suggest true infection requiring treatment.
-                                        </p>
-                                        <ul className="text-sm text-gray-400 space-y-2">
-                                            <li>• Start targeted antibiotics</li>
-                                            <li>• Use narrowest spectrum</li>
-                                            <li>• Plan 7-day course</li>
-                                            <li>• Daily reassessment</li>
-                                        </ul>
-                                        <div className="mt-4 pt-4 border-t border-gray-700">
-                                            <div className="flex justify-between text-sm">
-                                                <span>Infection Score: {result.infectionScore}</span>
-                                                <span>Colonization Score: {result.colonizationScore}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                        <label style={{fontSize: '18px', fontWeight: '500', marginTop: '24px', marginBottom: '16px', display: 'block'}}>
+                            Additional Risk Factors
+                        </label>
+                        <div className="checkbox-group">
+                            <label className="checkbox-label">
+                                <input 
+                                    type="checkbox" 
+                                    checked={hasProCalcitonin}
+                                    onChange={(e) => setHasProCalcitonin(e.target.checked)}
+                                />
+                                Procalcitonin &gt; 0.25 ng/mL
+                            </label>
+                            <label className="checkbox-label">
+                                <input 
+                                    type="checkbox" 
+                                    checked={hasClinicalDeterioration}
+                                    onChange={(e) => setHasClinicalDeterioration(e.target.checked)}
+                                />
+                                Clinical Deterioration Pattern
+                            </label>
+                            <label className="checkbox-label">
+                                <input 
+                                    type="checkbox" 
+                                    checked={hasMultiplePositiveCultures}
+                                    onChange={(e) => setHasMultiplePositiveCultures(e.target.checked)}
+                                />
+                                Multiple Positive Cultures
+                            </label>
+                        </div>
+
+                        <div className="button-group">
+                            <button className="btn btn-primary" onClick={calculateRecommendation}>
+                                Calculate Recommendations
+                            </button>
+                            <button className="btn btn-secondary" onClick={reset}>
+                                Reset
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Bottom Spacer for iOS */}
-                    <div className="h-24"></div>
+                    <div className="card">
+                        <h2 className="section-title">
+                            <span className="icon">📊</span>
+                            Culture Interpretation Reference
+                        </h2>
+                        <div className="reference-card">
+                            <div className="reference-item">
+                                <span className="reference-label">High Colonization Likelihood:</span>
+                                <span className="reference-value observe">Observe</span>
+                            </div>
+                            <div className="reference-item">
+                                <span className="reference-label">High Infection Likelihood:</span>
+                                <span className="reference-value treat">Treat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {showResults && (
+                        <div className="card">
+                            <h2 className="section-title">
+                                <span className="icon">👨‍⚕️</span>
+                                Clinical Recommendations
+                            </h2>
+
+                            <div className={`recommendation-card ${showResults.recommendation === 'observe' ? 'risk-category' : 'risk-category'}`}>
+                                <div className="recommendation-title">Risk Category</div>
+                                <div className="recommendation-text">
+                                    {showResults.recommendation === 'observe' ? 'Likely colonization' : 'Likely infection'}
+                                </div>
+                            </div>
+
+                            {showResults.recommendation === 'observe' ? (
+                                <>
+                                    <div className="recommendation-card observe-recommendation">
+                                        <div className="recommendation-title">Management Strategy</div>
+                                        <div className="recommendation-text">
+                                            Continue current management without antibiotics. Monitor clinical status closely.
+                                        </div>
+                                    </div>
+
+                                    <div className="info-section">
+                                        <h4>Monitoring Plan</h4>
+                                        <p>
+                                            Daily assessment of clinical parameters. Consider repeat culture if deterioration occurs.
+                                        </p>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="recommendation-card treat-recommendation">
+                                        <div className="recommendation-title">Antibiotic Therapy</div>
+                                        <div className="recommendation-text">
+                                            Initiate targeted antibiotic therapy based on culture sensitivities (7-day course recommended)
+                                        </div>
+                                    </div>
+
+                                    <div className="info-section">
+                                        <h4>De-escalation Strategy</h4>
+                                        <p>
+                                            Daily reassessment for de-escalation opportunities. Use narrowest spectrum agent possible.
+                                        </p>
+                                    </div>
+                                </>
+                            )}
+
+                            <div className="recommendation-card" style={{backgroundColor: '#f5f5f7', border: '1px solid #d2d2d7'}}>
+                                <div className="recommendation-title">Follow-up</div>
+                                <div className="recommendation-text" style={{color: '#1d1d1f'}}>
+                                    {showResults.recommendation === 'observe' 
+                                        ? 'Continue standard ventilator bundle and monitor for changes'
+                                        : 'Monitor response to therapy and consider de-escalation at 48-72 hours'
+                                    }
+                                </div>
+                            </div>
+
+                            <div className="score-display">
+                                <div>
+                                    <strong>Infection Score:</strong> {showResults.infectionScore}
+                                </div>
+                                <div>
+                                    <strong>Colonization Score:</strong> {showResults.colonizationScore}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="card">
+                        <div className="evidence-base">
+                            <h3>Evidence Base</h3>
+                            <ul className="evidence-list">
+                                <li>Based on 2016 ATS/IDSA HAP/VAP Guidelines</li>
+                                <li>50% of positive tracheal cultures represent colonization</li>
+                                <li>No mortality increase when stable patients observed</li>
+                                <li>38% reduction in cultures with stewardship programs</li>
+                            </ul>
+                        </div>
+
+                        <div className="evidence-base">
+                            <h3>
+                                <span className="icon">ℹ️</span>
+                                Role of Tracheal Aspirate Cultures
+                            </h3>
+                            <ul className="evidence-list">
+                                <li>Low specificity (23-78%) for true infection</li>
+                                <li>Clinical parameters more reliable than culture results alone</li>
+                                <li>Consider colonization in stable/improving patients</li>
+                            </ul>
+                            
+                            <p className="footer-text">
+                                Tracheal aspirate cultures should guide therapy selection, not drive treatment decisions in isolation.
+                                Clinical judgment should always be applied in individual patient care.
+                            </p>
+                        </div>
+                    </div>
+
+                    <p className="footer-text">
+                        This tool provides evidence-based recommendations.
+                        Clinical judgment should always be applied in individual patient care.
+                    </p>
                 </div>
             );
         };
