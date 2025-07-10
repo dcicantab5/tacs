@@ -10,7 +10,7 @@ This web-based tool assists clinicians in making informed decisions about whethe
 
 ## Site
 
-Visit the tool at: `https://dcicantab5.github.io/tacs/`
+Visit the tool at: [https://SAIFULSAFUAN.COM/bleeders/](https://SAIFULSAFUAN.COM/bleeders/)
 
 ## Clinical Deterioration Pattern Explained
 
@@ -54,7 +54,7 @@ The "Clinical Deterioration Pattern" checkbox should be selected when there's pr
 - Day 2: Temp 37.3°C, FiO2 35%, WBC 10k
 - Day 3: Temp 37.0°C, FiO2 30%, WBC 9k
 
-## 📈 Scoring System
+## Scoring System
 
 The tool uses a weighted scoring system to differentiate infection from colonization:
 
@@ -88,7 +88,6 @@ The tool uses a weighted scoring system to differentiate infection from coloniza
 - **Maximum Infection Score**: 21 points
 - **Maximum Colonization Score**: 11 points
 
-```
 
 ## 💻 Usage Instructions
 
