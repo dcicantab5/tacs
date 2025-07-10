@@ -89,7 +89,7 @@ The tool uses a weighted scoring system to differentiate infection from coloniza
 - **Maximum Colonization Score**: 11 points
 
 
-## 💻 Usage Instructions
+## Usage Instructions
 
 1. **Enter Clinical Parameters:**
    - Select neutrophil count from Gram stain
@@ -152,17 +152,17 @@ This scoring system is an **EDUCATIONAL DEMONSTRATION** and:
 - Include more detailed antimicrobial recommendations
 - Add multi-language support
 
-## 📧 Contact & Support
+## Contact & Support
 
 For questions, suggestions, or issues:
 - Open an issue on GitHub
 - Contact via GitHub profile
 
-## 📄 License
+## License
 
 This project is licensed under the AGPL-3.0 License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - ATS/IDSA for clinical guidelines
 - Healthcare providers working to reduce unnecessary antibiotic use
